@@ -1,24 +1,25 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from 'react';
+import { chat } from './ChatGPTAPI/chatGPTAPI';
+
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+  const [prompt, setPrompt] = useState("")
+  const [answer, setAnswer] = useState("")
+
+
+  const handleSend = () => {
+    chat(prompt).then((response) => {
+      setAnswer(response.data.choices[0].text || "1");
+    }).catch((error) => {
+      console.error(error);
+    });
+  }
+
+  return ( 
+    <div style={{textAlign:"center",justifyContent:"center", width:"40%",margin:"auto",marginTop:"50px"}}>
+      <input type="text" value={prompt} onChange={(e) => setPrompt(e.target.value)} />
+      <button onClick={handleSend}>Send</button>
+      <p>{answer}</p>
     </div>
   );
 }

@@ -5,6 +5,7 @@ import { chat } from './ChatGPTAPI/chatGPTAPI';
 function App() {
   const [prompt, setPrompt] = useState("")
   const [answer, setAnswer] = useState("")
+  const [lock, setLock] = useState("")
 
 
   const handleSend = () => {
@@ -17,9 +18,16 @@ function App() {
 
   return ( 
     <div style={{textAlign:"center",justifyContent:"center", width:"40%",margin:"auto",marginTop:"50px"}}>
-      <input type="text" value={prompt} onChange={(e) => setPrompt(e.target.value)} />
-      <button onClick={handleSend}>Send</button>
-      <p>{answer}</p>
+      {(lock != process.env.REACT_APP_LOCK)?<>
+        <p>Input a combination that ELnur gave you</p>
+        <input type="text" value={lock} onChange={(e) => setLock(e.target.value)} />
+      </>:
+      <>
+        <input type="text" value={prompt} onChange={(e) => setPrompt(e.target.value)} />
+        <button onClick={handleSend}>Send</button>
+        <p>{answer}</p>
+      </>}
+
     </div>
   );
 }
